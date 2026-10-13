@@ -1,0 +1,12 @@
+https://paypal.com/signin
+https://paypa1.com/login
+https://www.paypal.com.secure-login.xyz/verify
+http://192.168.1.5/bank/login.php
+https://xn--pple-43d.com/
+https://accounts.google.com.evil.top@203.0.113.9/
+https://bit.ly/3abc
+https://github.com/user/repo
+https://example.com/?next=https://evil.io
+https://micros0ft-support.com
+https://login.acme-corp.example/
+https://acme-c0rp.com/sso

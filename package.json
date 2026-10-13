@@ -1,0 +1,57 @@
+{
+  "name": "phish-sentinel",
+  "version": "0.0.0",
+  "description": "Offline phishing URL heuristics: lookalike and homograph domains, brand impersonation, IP hosts, userinfo tricks, risky TLDs, shorteners, free hosting, open redirects and more, with an explainable score per URL. Protect your own brands with a lookalike watchlist. CLI, library and GitHub Action. Zero deps.",
+  "type": "module",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "phish-sentinel": "bin/phish-sentinel.js"
+  },
+  "files": [
+    "src",
+    "bin",
+    "action.yml",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "keywords": [
+    "phishing",
+    "phishing-detection",
+    "url",
+    "homograph",
+    "typosquatting",
+    "lookalike-domain",
+    "idn",
+    "brand-protection",
+    "threat-intel",
+    "security",
+    "sarif",
+    "cli",
+    "github-action"
+  ],
+  "author": "Louis Wright <hello@louiswright.co.uk> (https://github.com/MrLouisWright)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MrLouisWright/phish-sentinel.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MrLouisWright/phish-sentinel/issues"
+  },
+  "homepage": "https://github.com/MrLouisWright/phish-sentinel#readme"
+}

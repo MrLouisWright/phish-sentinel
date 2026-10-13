@@ -1,0 +1,51 @@
+name: 'phish-sentinel'
+description: 'Score URLs for phishing signs (lookalikes, homographs, brand impersonation) offline'
+author: 'Louis Wright'
+branding: { icon: 'anchor', color: 'red' }
+inputs:
+  targets: { description: 'URLs, or files to extract URLs from (space-separated)', required: true }
+  brands: { description: 'Comma-separated brand domains to protect (lookalike watchlist)', default: '' }
+  fail-on: { description: 'critical | high | medium | low | info | none', default: 'high' }
+  config: { description: 'Path to JSON config file', default: '' }
+  sarif: { description: 'Write SARIF to this path', default: '' }
+  json: { description: 'Write JSON report to this path', default: '' }
+  job-summary: { description: 'Write the Markdown report to the job summary (true/false)', default: 'true' }
+  args: { description: 'Extra CLI arguments', default: '' }
+outputs:
+  markdown-file: { description: 'Path of the Markdown report', value: '${{ steps.run.outputs.markdown-file }}' }
+  exit-code: { description: 'Exit code of the scan (0 pass, 1 findings, 2 error)', value: '${{ steps.run.outputs.exit-code }}' }
+runs:
+  using: 'composite'
+  steps:
+    - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+      with: { node-version: '20' }
+    - id: run
+      shell: bash
+      env:
+        PS_TARGETS: ${{ inputs.targets }}
+        PS_BRANDS: ${{ inputs.brands }}
+        PS_FAIL_ON: ${{ inputs.fail-on }}
+        PS_CONFIG: ${{ inputs.config }}
+        PS_SARIF: ${{ inputs.sarif }}
+        PS_JSON: ${{ inputs.json }}
+        PS_JOB_SUMMARY: ${{ inputs.job-summary }}
+        PS_ARGS: ${{ inputs.args }}
+        PS_BIN: ${{ github.action_path }}/bin/phish-sentinel.js
+      run: |
+        md="$RUNNER_TEMP/phish-sentinel.md"
+        # shellcheck disable=SC2206
+        targets=($PS_TARGETS)
+        args=("${targets[@]}" --fail-on "$PS_FAIL_ON" --markdown "$md")
+        [ -n "$PS_BRANDS" ] && args+=(--brand "$PS_BRANDS")
+        [ -n "$PS_CONFIG" ] && args+=(--config "$PS_CONFIG")
+        [ -n "$PS_SARIF" ] && args+=(--sarif "$PS_SARIF")
+        [ -n "$PS_JSON" ] && args+=(--json "$PS_JSON")
+        set +e
+        # shellcheck disable=SC2086
+        node "$PS_BIN" "${args[@]}" $PS_ARGS
+        code=$?
+        set -e
+        echo "markdown-file=$md" >> "$GITHUB_OUTPUT"
+        echo "exit-code=$code" >> "$GITHUB_OUTPUT"
+        if [ "$PS_JOB_SUMMARY" = "true" ] && [ -f "$md" ]; then cat "$md" >> "$GITHUB_STEP_SUMMARY"; fi
+        exit $code
