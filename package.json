@@ -1,6 +1,6 @@
 {
   "name": "phish-sentinel",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Offline phishing URL heuristics: lookalike and homograph domains, brand impersonation, IP hosts, userinfo tricks, risky TLDs, shorteners, free hosting, open redirects and more, with an explainable score per URL. Protect your own brands with a lookalike watchlist. CLI, library and GitHub Action. Zero deps.",
   "type": "module",
   "main": "./src/index.js",
