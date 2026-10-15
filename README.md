@@ -1,5 +1,7 @@
 # phish-sentinel
 
+[![npm version](https://img.shields.io/npm/v/phish-sentinel.svg)](https://www.npmjs.com/package/phish-sentinel) [![CI](https://github.com/MrLouisWright/phish-sentinel/actions/workflows/ci.yml/badge.svg)](https://github.com/MrLouisWright/phish-sentinel/actions/workflows/ci.yml) [![Node](https://img.shields.io/node/v/phish-sentinel.svg)](https://nodejs.org) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 > Offline phishing URL heuristics with an explainable score: lookalike and homograph domains, brand impersonation, IP hosts, `user@host` tricks, risky TLDs, shorteners, free hosting and redirect chains.
 
 `phish-sentinel` scores URLs from 0 to 100 and tells you exactly why. Give it URLs, or files (emails, `.eml`, HTML, logs, URL lists) and it extracts the URLs itself, refanging `hxxp://` and `[.]` and decoding quoted-printable mail. **Nothing is fetched or resolved**, so it is safe to run on live phishing samples and works in air-gapped triage. Pass your own domains with `--brand` to catch typosquats and homographs of *your* brand. CLI, library and GitHub Action. Node.js 18+, **zero runtime dependencies**.
