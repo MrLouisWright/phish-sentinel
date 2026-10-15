@@ -2,33 +2,6 @@
   "name": "phish-sentinel",
   "version": "1.0.0",
   "description": "Offline phishing URL heuristics: lookalike and homograph domains, brand impersonation, IP hosts, userinfo tricks, risky TLDs, shorteners, free hosting, open redirects and more, with an explainable score per URL. Protect your own brands with a lookalike watchlist. CLI, library and GitHub Action. Zero deps.",
-  "type": "module",
-  "main": "./src/index.js",
-  "types": "./src/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./src/index.d.ts",
-      "default": "./src/index.js"
-    },
-    "./package.json": "./package.json"
-  },
-  "bin": {
-    "phish-sentinel": "bin/phish-sentinel.js"
-  },
-  "files": [
-    "src",
-    "bin",
-    "action.yml",
-    "README.md",
-    "CHANGELOG.md",
-    "LICENSE"
-  ],
-  "engines": {
-    "node": ">=18"
-  },
-  "scripts": {
-    "test": "node --test test/*.test.js"
-  },
   "keywords": [
     "phishing",
     "phishing-detection",
@@ -57,5 +30,50 @@
   "bugs": {
     "url": "https://github.com/MrLouisWright/phish-sentinel/issues"
   },
-  "homepage": "https://mrlouiswright.github.io/phish-sentinel/"
+  "homepage": "https://mrlouiswright.github.io/phish-sentinel/",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./src/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/types/index.d.ts",
+        "default": "./src/index.js"
+      },
+      "require": {
+        "types": "./dist/types/index.d.ts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "phish-sentinel": "bin/phish-sentinel.js"
+  },
+  "files": [
+    "src",
+    "dist",
+    "bin",
+    "action.yml",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "build": "node scripts/build.mjs",
+    "prepack": "npm run build"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "esbuild": "^0.25.12",
+    "typescript": "^5.9.3"
+  }
 }

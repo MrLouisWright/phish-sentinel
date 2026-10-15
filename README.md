@@ -1,6 +1,6 @@
 # phish-sentinel
 
-[![npm version](https://img.shields.io/npm/v/phish-sentinel.svg)](https://www.npmjs.com/package/phish-sentinel) [![CI](https://github.com/MrLouisWright/phish-sentinel/actions/workflows/ci.yml/badge.svg)](https://github.com/MrLouisWright/phish-sentinel/actions/workflows/ci.yml) [![Node](https://img.shields.io/node/v/phish-sentinel.svg)](https://nodejs.org) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![npm version](https://img.shields.io/npm/v/phish-sentinel.svg)](https://www.npmjs.com/package/phish-sentinel) [![CI](https://github.com/MrLouisWright/phish-sentinel/actions/workflows/ci.yml/badge.svg)](https://github.com/MrLouisWright/phish-sentinel/actions/workflows/ci.yml) [![Node](https://img.shields.io/node/v/phish-sentinel.svg)](https://nodejs.org) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![provenance](https://img.shields.io/badge/npm-provenance-blue)](https://docs.npmjs.com/generating-provenance-statements)
 
 > Offline phishing URL heuristics with an explainable score: lookalike and homograph domains, brand impersonation, IP hosts, `user@host` tricks, risky TLDs, shorteners, free hosting and redirect chains.
 
@@ -134,6 +134,48 @@ Free to use under MIT, no attribution required. If phish-sentinel helps you, a l
 ```markdown
 [![Built with phish-sentinel by Louis Wright](https://img.shields.io/badge/built%20with-phish--sentinel-blue)](https://louiswright.co.uk)
 ```
+
+## Lookalike monitoring
+
+```sh
+npx phish-sentinel lookalikes example.com -f table           # list candidates (offline)
+npx phish-sentinel lookalikes example.com --check --rdap     # which are registered (DNS + RDAP)
+```
+
+Run it on a schedule. Each registered typosquat is reported as a `lookalike-registered` finding, with its registration date and registrar when RDAP returns them.
+
+## Phishing feeds (optional, offline cache)
+
+```sh
+npx phish-sentinel update-feeds --feeds .phish-cache                      # OpenPhish community feed
+PHISHTANK_KEY=... npx phish-sentinel update-feeds --feeds .phish-cache --source openphish,phishtank
+npx phish-sentinel urls.txt --feeds .phish-cache
+```
+
+Scoring never touches the network. Feeds are only downloaded when you run `update-feeds`. Please follow each feed's terms of use.
+
+## Plugins and image fuzzy hashes
+
+```js
+import { checkAsync, imageHashPlugin } from 'phish-sentinel';
+const visual = imageHashPlugin({ references: { MyBank: ['f0e1d2c3b4a59687'] }, hashUrl: async (url) => myScreenshotDHash(url) });
+const report = await checkAsync(urls, { protect: ['mybank.com'], plugins: [visual] });
+```
+
+A plugin is `{ name, analyze(url, ctx) }` and returns signals of the form `{ rule, message, weight }`. phish-sentinel doesn't fetch or render pages itself. Your `hashUrl` decides how to get the image.
+
+Only external URLs are scored. Links to your own `--brand`/`--own` domains are skipped.
+
+## Module formats and types
+
+Ships ESM (`import`) and a bundled CommonJS build (`require`), with TypeScript declarations generated from the source:
+
+```js
+import * as lib from 'phish-sentinel';      // ESM
+const lib = require('phish-sentinel');      // CommonJS
+```
+
+Tests live in [`test/`](test) and run on Node 18, 20 and 22 in [GitHub Actions](https://github.com/MrLouisWright/phish-sentinel/actions/workflows/ci.yml), including a require+import check. Releases are published with `npm publish --provenance`.
 
 ## License
 

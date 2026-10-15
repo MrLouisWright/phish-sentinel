@@ -1,6 +1,10 @@
 export const RULES = {
   'phishing-likely': { severity: 'critical', title: 'Combined score says this URL is very likely phishing', group: 'verdict' },
   'phishing-suspicious': { severity: 'high', title: 'Combined score says this URL is suspicious', group: 'verdict' },
+  'known-phishing': { severity: 'critical', title: 'URL or host is listed in a cached phishing feed (OpenPhish, PhishTank)', group: 'feed' },
+  'lookalike-registered': { severity: 'high', title: 'A typosquat of your domain is registered', group: 'domain' },
+  'visual-lookalike': { severity: 'high', title: 'Page image fuzzy-hash matches your brand (plugin)', group: 'plugin' },
+  'plugin-signal': { severity: 'medium', title: 'Signal from a custom plugin', group: 'plugin' },
   'brand-lookalike': { severity: 'high', title: 'Domain is a typo/lookalike of a protected brand domain', group: 'domain' },
   'homograph': { severity: 'high', title: 'IDN homograph: mixed scripts or confusable characters spell a known domain', group: 'domain' },
   'brand-impersonation': { severity: 'high', title: 'Brand name in the subdomain or path of an unrelated domain', group: 'domain' },

@@ -1,7 +1,7 @@
 import { domainToUnicode } from 'node:url';
 import { MULTI_SUFFIX, BRANDS, RISKY_TLDS, SHORTENERS, FREE_HOSTS, LURE_WORDS, RISKY_EXT, CONFUSABLES } from './data.js';
 
-export const WEIGHTS = { 'brand-lookalike': 60, homograph: 70, 'brand-impersonation': 45, 'userinfo-trick': 50, 'dangerous-scheme': 60, 'ip-host': 30, punycode: 15, 'risky-tld': 15, 'free-hosting': 20, shortener: 15, 'open-redirect': 20, 'credential-lure': 20, 'risky-download': 25, 'deep-subdomain': 10, 'hyphenated-domain': 10, 'random-domain': 10, 'encoded-url': 10, 'non-standard-port': 10, 'plain-http': 5, 'long-url': 5 };
+export const WEIGHTS = { 'known-phishing': 100, 'visual-lookalike': 50, 'brand-lookalike': 60, homograph: 70, 'brand-impersonation': 45, 'userinfo-trick': 50, 'dangerous-scheme': 60, 'ip-host': 30, punycode: 15, 'risky-tld': 15, 'free-hosting': 20, shortener: 15, 'open-redirect': 20, 'credential-lure': 20, 'risky-download': 25, 'deep-subdomain': 10, 'hyphenated-domain': 10, 'random-domain': 10, 'encoded-url': 10, 'non-standard-port': 10, 'plain-http': 5, 'long-url': 5 };
 
 export function registrableDomain(host) {
   const labels = host.toLowerCase().replace(/\.$/, '').split('.');
