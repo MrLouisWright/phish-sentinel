@@ -70,6 +70,44 @@ const r = analyzeUrl('https://acme-c0rp.com/sso', { brands: brandTable(['acme-co
 // { score: 60, verdict: 'suspicious', signals: [{ rule: 'brand-lookalike', ... }] }
 ```
 
+## Options
+
+Full CLI reference (`phish-sentinel --help`):
+
+```text
+phish-sentinel 1.1.0 — offline phishing heuristics for URLs, with an explainable score
+
+Usage: phish-sentinel <url|file|-> [...] [options]
+       phish-sentinel lookalikes <your-domain> [--check] [--rdap] [--limit n] [--ascii]
+       phish-sentinel update-feeds --feeds <dir> [--source openphish,phishtank] [--phishtank-key k]
+
+Files (text, HTML, .eml, URL lists) and stdin ("-") are scanned for URLs; hxxp:// and [.] are refanged.
+Only external URLs are scored: URLs on your --brand/--own domains are skipped (--include-own to score them).
+Scoring never fetches or resolves anything; only "lookalikes --check" (DNS, plus RDAP with --rdap) and
+"update-feeds" use the network.
+
+      --own <domain>         First-party domain to skip (repeatable or comma-separated)
+      --include-own          Also score URLs on your own domains
+      --feeds <dir|file>     Match against feeds cached by update-feeds (or a plain URL list)
+      --plugin <module>      Load a plugin module (default export: plugin object or array); repeatable
+
+      --brand <domain>       Protect your own domain: flag typos, homographs and impersonation of it
+                             (repeatable or comma-separated)
+      --trust <domain>       Never flag URLs on this registered domain (repeatable or comma-separated)
+      --no-builtin-brands    Only use --brand domains, not the built-in list of commonly phished brands
+  -f table                   One line per URL: score, verdict, URL
+Policy and output
+  -c, --config <file>        JSON config (default .phish-sentinel.json if present)
+  -f, --format <fmt>         text (default) | json | sarif | markdown
+      --json/--sarif/--markdown <file>  Also write that format to a file
+      --fail-on <sev>        critical | high | medium | low | info | none (default high)
+      --list-rules           Print rules and default severities
+      --no-color             Disable colours
+  -v, --version / -h, --help
+
+Exit codes: 0 = passed, 1 = findings at or above --fail-on, 2 = usage error or a target could not be checked.
+```
+
 ## Configuration
 
 Put a `.phish-sentinel.json` in the working directory (or pass `--config <file>`). Every key is optional; CLI flags override the file.
